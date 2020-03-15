@@ -7,7 +7,7 @@ const passport = require('passport')
     //Set up default mongoose connection
 
 const app = express();
-require('./config/passport')(passport)
+// require('./config/passport')(passport)
 const db = require('./config/keys').MongoURI;
 
 mongoose.connect(db, { useNewUrlParser: true })

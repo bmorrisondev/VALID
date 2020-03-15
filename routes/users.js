@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs')
-const passport = require('passport')
+// const passport = require('passport')
+const passport = require('../config/passport')
 
 const User = require('../models/User')
 
@@ -10,12 +11,23 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/dashboard', (req, res) => {
-    res.render('dashboard');
+  try {
+    var data = {
+      user: {
+        name: "test"
+      }
+    }
+    res.render('dashboard', data);
+  } catch (err) {
+    console.error(err)
+    res.status(500);
+  }
 });
 
 router.get('/register', (req, res) => {
     res.render('register');
 });
+
 router.post('/register', (req, res) => {
     const { name, email, password, password2 } = req.body;
     let errors = [];
@@ -78,12 +90,12 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {
+  console.log('post login called')
     passport.authenticate('local', {
-        successRedirect: '/dashboard',
+        successRedirect: '/users/dashboard',
         failureRedirect: '/users/login',
         failureFlash: true
-    });
-    (req, res, next);
+    })(req, res, next);
 });
 
 
